@@ -16,39 +16,19 @@ const Button = ({ onClick, text }) => {
   );
 };
 
-const Total = ({ good, neutral, bad }) => {
-  return (
-    <div>
-      <p>Total : {good + neutral + bad}</p>
-    </div>
-  );
-};
-
 // calTotal();
 
-const Average = ({ good, neutral, bad }) => {
-  return (
-    <div>
-      <p>Average : {good + neutral + bad / 3}</p>
-    </div>
-  );
-};
-
-const PositiveRating = ({ good, neutral, bad }) => {
+const Statistics = ({ headerText, good, neutral, bad }) => {
   const totaRating = good + neutral + bad;
   return (
     <div>
+      <h1>{headerText}</h1>
+      <p>Good : {good}</p>
+      <p>Neutral : {neutral}</p>
+      <p>Bad : {bad}</p>
+      <p>Total : {good + neutral + bad}</p>
+      <p>Average : {good + neutral + bad / 3}</p>
       <p>Positive Rating : {(good / totaRating) * 100} %</p>
-    </div>
-  );
-};
-
-const StatsDisplay = ({ text, number }) => {
-  return (
-    <div>
-      <p>
-        {text}: {number}
-      </p>
     </div>
   );
 };
@@ -65,13 +45,12 @@ const App = () => {
       <Button text={"good"} onClick={() => setGood(good + 1)} />
       <Button text={"neutral"} onClick={() => setNeutral(neutral + 1)} />
       <Button text={"bad"} onClick={() => setBad(bad + 1)} />
-      <Header text={"statistics"} />
-      <StatsDisplay text={"good"} number={good} />
-      <StatsDisplay text={"neutral"} number={neutral} />
-      <StatsDisplay text={"bad"} number={bad} />
-      <Total good={good} neutral={neutral} bad={bad} />
-      <Average good={good} neutral={neutral} bad={bad} />
-      <PositiveRating good={good} neutral={neutral} bad={bad} />
+      <Statistics
+        headerText={"statistics"}
+        good={good}
+        neutral={neutral}
+        bad={bad}
+      />
     </div>
   );
 };
