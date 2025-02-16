@@ -21,9 +21,14 @@ const Button = ({ onClick, text }) => {
 const StatisticLine = ({ text, value }) => {
   return (
     <div>
-      <p>
-        {text}: {value}
-      </p>
+      <table>
+        <tbody>
+          <tr>
+            <td>{text}</td>
+            <td>{value}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -40,11 +45,13 @@ const Statistics = ({ headerText, good, neutral, bad, allClicks }) => {
   return (
     <div>
       <h1>{headerText}</h1>
+
       <StatisticLine text={"Good  "} value={good} />
+
       <StatisticLine text={"Neutral  "} value={neutral} />
       <StatisticLine text={"Bad  "} value={bad} />
       <StatisticLine text={"Total  "} value={good + neutral + bad} />
-      <StatisticLine text={"Average  "} value={good + neutral + bad / 3} />
+      <StatisticLine text={"Average  "} value={(good + neutral + bad) / 3} />
       <StatisticLine
         text={"Positive Rating  "}
         value={(good / totalRating) * 100}
