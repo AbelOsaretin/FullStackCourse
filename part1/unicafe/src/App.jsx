@@ -18,6 +18,16 @@ const Button = ({ onClick, text }) => {
 
 // calTotal();
 
+const StatisticLine = ({ text, value }) => {
+  return (
+    <div>
+      <p>
+        {text}: {value}
+      </p>
+    </div>
+  );
+};
+
 const Statistics = ({ headerText, good, neutral, bad, allClicks }) => {
   if (allClicks.length === 0) {
     return (
@@ -26,16 +36,19 @@ const Statistics = ({ headerText, good, neutral, bad, allClicks }) => {
       </div>
     );
   }
-  const totaRating = good + neutral + bad;
+  const totalRating = good + neutral + bad;
   return (
     <div>
       <h1>{headerText}</h1>
-      <p>Good : {good}</p>
-      <p>Neutral : {neutral}</p>
-      <p>Bad : {bad}</p>
-      <p>Total : {good + neutral + bad}</p>
-      <p>Average : {good + neutral + bad / 3}</p>
-      <p>Positive Rating : {(good / totaRating) * 100} %</p>
+      <StatisticLine text={"Good  "} value={good} />
+      <StatisticLine text={"Neutral  "} value={neutral} />
+      <StatisticLine text={"Bad  "} value={bad} />
+      <StatisticLine text={"Total  "} value={good + neutral + bad} />
+      <StatisticLine text={"Average  "} value={good + neutral + bad / 3} />
+      <StatisticLine
+        text={"Positive Rating  "}
+        value={(good / totalRating) * 100}
+      />
     </div>
   );
 };
