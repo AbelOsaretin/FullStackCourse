@@ -13,6 +13,7 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVote] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
   // Generate a random integer between min (inclusive) and max (inclusive)
   function getRandomInt(min, max) {
@@ -21,19 +22,30 @@ const App = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const handleClick = () => {
+  const handleNextClick = () => {
     // Example: Random number between 1 and 10
     const randomInt = getRandomInt(0, 7);
     console.log(randomInt); // Outputs a number like 7
     setSelected(randomInt);
   };
 
+  const handleVoteClick = () => {
+    const copyVote = [...votes];
+
+    copyVote[selected] += 1;
+
+    setVote(copyVote);
+  };
+
   return (
     <div>
       {anecdotes[selected]}
       <br />
+      <p>Vote: {votes[selected]}</p>
+      <button onClick={handleVoteClick}> Vote</button>
       <br />
-      <button onClick={handleClick}> Next Anecdotes</button>
+      <br />
+      <button onClick={handleNextClick}> Next Anecdotes</button>
     </div>
   );
 };
