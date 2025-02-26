@@ -1,5 +1,45 @@
 import { useState } from "react";
 
+const Button = ({ text, onClick }) => {
+  return <button onClick={onClick}>{text}</button>;
+};
+
+const DisplayAnecdotes = ({ headingText, anecdotesText, voteCount }) => {
+  return (
+    <div>
+      <h1>{headingText}</h1>
+      <p>{anecdotesText}</p>
+      <p>Vote: {voteCount}</p>
+    </div>
+  );
+};
+
+// const AnecdoteWithMostVotes = ({ headingText, anecdotesText }) => {
+//   const [mostVotes, setMostVotes] = useState(0);
+
+//   const handleMostVotes = () => {
+//     let max = 0;
+//     let indexMax = 0;
+//     votes.forEach((item, index) => {
+//       if (item > max) {
+//         max = item;
+//         indexMax = index;
+//       }
+//     });
+
+//     setMostVotes(indexMax);
+//     return indexMax;
+//   };
+
+//   return (
+//     <div>
+//       <h1>{headingText}</h1>
+//       <p>{anecdotesText[mostVotes]}</p>
+//       <p>Most Vote Count: {mostVotes}</p>
+//     </div>
+//   );
+// };
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -14,6 +54,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVote] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+  const [mostVotes, setMostVotes] = useState(0);
 
   // Generate a random integer between min (inclusive) and max (inclusive)
   function getRandomInt(min, max) {
@@ -27,6 +68,7 @@ const App = () => {
     const randomInt = getRandomInt(0, 7);
     console.log(randomInt); // Outputs a number like 7
     setSelected(randomInt);
+    handleMostVotes();
   };
 
   const handleVoteClick = () => {
@@ -35,17 +77,40 @@ const App = () => {
     copyVote[selected] += 1;
 
     setVote(copyVote);
+    handleMostVotes();
+  };
+
+  const handleMostVotes = () => {
+    let max = 0;
+    let indexMax = 0;
+    votes.forEach((item, index) => {
+      if (item > max) {
+        max = item;
+        indexMax = index;
+      }
+    });
+
+    setMostVotes(indexMax);
+    console.log("Most Voted", indexMax);
+    return indexMax;
   };
 
   return (
     <div>
-      {anecdotes[selected]}
+      <DisplayAnecdotes
+        headingText={"Anecdote of the day"}
+        anecdotesText={anecdotes[selected]}
+        voteCount={votes[selected]}
+      />
+      <Button text={"Vote"} onClick={handleVoteClick} />
       <br />
-      <p>Vote: {votes[selected]}</p>
-      <button onClick={handleVoteClick}> Vote</button>
       <br />
+      <Button text={"Next Anecdotes"} onClick={handleNextClick} />
       <br />
-      <button onClick={handleNextClick}> Next Anecdotes</button>
+
+      <h1>Anecdote With Most Votes</h1>
+      <p>{anecdotes[mostVotes]}</p>
+      <p>has {votes[mostVotes]} votes</p>
     </div>
   );
 };
