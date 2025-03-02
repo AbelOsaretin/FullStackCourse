@@ -1,17 +1,33 @@
-import Note from "./components/Note";
+import Course from "./components/Course";
+import Part from "./components/Part";
 
-const App = ({ notes }) => {
-  // const result = notes.map((note) => note.content);
-  // console.log(result);
+const App = () => {
+  const course = {
+    id: 1,
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+        id: 1,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+        id: 2,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+        id: 3,
+      },
+    ],
+  };
 
   return (
     <div>
-      <h1>Notes</h1>
-      <ul>
-        {notes.map((note) => {
-          <Note key={note.id} note={note} />;
-        })}
-      </ul>
+      <Course course={course} />
+      <Part part={course.parts} />
     </div>
   );
 };
