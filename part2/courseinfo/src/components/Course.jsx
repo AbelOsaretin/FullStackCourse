@@ -13,14 +13,6 @@ const Course = ({ course }) => {
       </div>
     );
   });
-
-  // return (
-  //   <div>
-  //     <Header name={course[1].name} />
-  //     <Content part={course[1].parts} />
-  //     <Total parts={course[1].parts} />
-  //   </div>
-  // );
 };
 
 export default Course;
