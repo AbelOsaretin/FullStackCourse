@@ -22,8 +22,6 @@ const App = () => {
   const handleFilterInput = (event) => {
     setFilter(event.target.value);
 
-    // console.log(persons.find((person) => person.name == filter));
-    // console.log(persons.some((person) => person.name == filter));
     console.log(
       persons.filter((person) =>
         person.name.toLowerCase().includes(filter.toLowerCase())
@@ -69,13 +67,39 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
 
-      {persons.map((person) => {
-        return (
-          <div key={person.id}>
-            {person.name} {person.number}
-          </div>
-        );
-      })}
+      {/* <div>
+        {filter != ""
+          ? [
+              persons.filter((person) =>
+                person.name.toLowerCase().includes(filter.toLowerCase())
+              ),
+            ]
+          : persons.map((person) => {
+              return (
+                <div key={person.id}>
+                  {person.name} {person.number}
+                </div>
+              );
+            })}
+      </div> */}
+
+      <div>
+        {filter !== ""
+          ? persons
+              .filter((person) =>
+                person.name.toLowerCase().includes(filter.toLowerCase())
+              )
+              .map((person) => (
+                <div key={person.id}>
+                  {person.name} {person.number}
+                </div>
+              ))
+          : persons.map((person) => (
+              <div key={person.id}>
+                {person.name} {person.number}
+              </div>
+            ))}
+      </div>
     </div>
   );
 };
