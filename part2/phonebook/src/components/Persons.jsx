@@ -9,15 +9,18 @@ const Persons = ({ filter, persons }) => {
               person.name.toLowerCase().includes(filter.toLowerCase())
             )
             .map((person) => (
-              <SinglePerson
-                key={person.id}
-                name={person.name}
-                number={person.number}
-              />
+              <div key={person.id}>
+                <SinglePerson
+                  id={person.id}
+                  name={person.name}
+                  number={person.number}
+                />
+              </div>
             ))
         : persons.map((person) => (
             <SinglePerson
               key={person.id}
+              id={person.id}
               name={person.name}
               number={person.number}
             />
