@@ -1,3 +1,5 @@
+import SinglePerson from "./SinglePerson";
+
 const Persons = ({ filter, persons }) => {
   return (
     <div>
@@ -7,14 +9,18 @@ const Persons = ({ filter, persons }) => {
               person.name.toLowerCase().includes(filter.toLowerCase())
             )
             .map((person) => (
-              <div key={person.id}>
-                {person.name} {person.number}
-              </div>
+              <SinglePerson
+                key={person.id}
+                name={person.name}
+                number={person.number}
+              />
             ))
         : persons.map((person) => (
-            <div key={person.id}>
-              {person.name} {person.number}
-            </div>
+            <SinglePerson
+              key={person.id}
+              name={person.name}
+              number={person.number}
+            />
           ))}
     </div>
   );
