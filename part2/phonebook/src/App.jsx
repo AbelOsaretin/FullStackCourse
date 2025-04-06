@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -49,57 +52,20 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <div>
-        filter shown with
-        <input value={filter} onChange={handleFilterInput} />
-      </div>
+      <Filter value={filter} onChange={handleFilterInput} />
 
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameInput} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberInput} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      <h3>Add a new</h3>
 
-      {/* <div>
-        {filter != ""
-          ? [
-              persons.filter((person) =>
-                person.name.toLowerCase().includes(filter.toLowerCase())
-              ),
-            ]
-          : persons.map((person) => {
-              return (
-                <div key={person.id}>
-                  {person.name} {person.number}
-                </div>
-              );
-            })}
-      </div> */}
+      <PersonForm
+        onSubmit={handleFormSubmit}
+        valueName={newName}
+        onChangeName={handleNameInput}
+        valueNumber={newNumber}
+        onChangeNumber={handleNumberInput}
+      />
+      <h3>Numbers</h3>
 
-      <div>
-        {filter !== ""
-          ? persons
-              .filter((person) =>
-                person.name.toLowerCase().includes(filter.toLowerCase())
-              )
-              .map((person) => (
-                <div key={person.id}>
-                  {person.name} {person.number}
-                </div>
-              ))
-          : persons.map((person) => (
-              <div key={person.id}>
-                {person.name} {person.number}
-              </div>
-            ))}
-      </div>
+      <Persons filter={filter} persons={persons} />
     </div>
   );
 };
