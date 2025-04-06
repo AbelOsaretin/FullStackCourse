@@ -8,6 +8,7 @@ const App = (props) => {
 
   const addNote = (event) => {
     event.preventDefault();
+    console.log(notes);
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
@@ -16,6 +17,7 @@ const App = (props) => {
 
     setNotes(notes.concat(noteObject));
     setNewNote("");
+    console.log("Second ", notes);
   };
 
   const handleNoteChange = (event) => {
