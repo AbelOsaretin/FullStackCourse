@@ -1,8 +1,11 @@
 const SinglePerson = ({ id, name, number }) => {
+  // console.log({ key }, { name }, { number });
   return (
-    <div key={id}>
-      {name} {number}
-    </div>
+    <>
+      <div>
+        {id} {name} {number}
+      </div>
+    </>
   );
 };
 

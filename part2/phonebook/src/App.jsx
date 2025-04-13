@@ -18,6 +18,7 @@ const App = () => {
     });
   }, []);
   console.log("render", persons.length, "persons");
+  console.log(persons);
 
   const handleNameInput = (event) => {
     setNewName(event.target.value);
@@ -46,11 +47,17 @@ const App = () => {
     };
 
     if (!persons.find((person) => person.name == newPersonObj.name)) {
-      setPersons(persons.concat(newPersonObj));
+      axios
+        .post("http://localhost:3001/persons", newPersonObj)
+        .then((response) => {
+          console.log(response.data);
+          setPersons(persons.concat(newPersonObj));
+          setNewName("");
+          setNewNumber("");
+        });
     } else {
       alert(`${newName} is already added to phonebook`);
     }
-    console.log(persons);
   };
 
   return (
