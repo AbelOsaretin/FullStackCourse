@@ -5,7 +5,10 @@ const getAll = () => {
   console.log("effect");
   const request = axios.get(baseUrl);
   console.log("Get All Contact Promise Fulfilled");
-  return request.then((response) => response.data);
+  return request.then((response) => {
+    console.log(response.data);
+    return response.data;
+  });
 };
 
 const addContact = (newPersonObj) => {
@@ -14,4 +17,9 @@ const addContact = (newPersonObj) => {
   return request.then((response) => response.data);
 };
 
-export default { getAll, addContact };
+const deleteContact = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
+export default { getAll, addContact, deleteContact };

@@ -55,6 +55,10 @@ const App = () => {
     }
   };
 
+  // const handleDelete = (id) => {
+  //   contactService.deleteContact(id).then((response) => console.log(response));
+  // };
+
   return (
     <>
       <div>
