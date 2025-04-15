@@ -4,6 +4,7 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 // import axios from "axios";
 import contactService from "./services/contact";
+// import { rules } from "eslint-plugin-react-refresh";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -32,7 +33,7 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = (event, name) => {
     event.preventDefault();
 
     const newPersonObj = {
@@ -40,24 +41,46 @@ const App = () => {
       number: newNumber,
     };
 
-    if (!persons.find((person) => person.name == newPersonObj.name)) {
+    if (persons.find((person) => person.name == newPersonObj.name)) {
       // axios
       //   .post("http://localhost:3001/persons", newPersonObj)
+      console.log(
+        "Log find result ",
+        persons.find((person) => person.name == newPersonObj.name)
+      );
 
+      if (
+        confirm(
+          `${name} is already added to phonebook, replace the old number with the new one?`
+        )
+      ) {
+        // contactService.updateContactNumber();
+        console.log(
+          "Log find result ",
+          persons.find((person) => person.name == newPersonObj.name)
+        );
+
+        const result = persons.find(
+          (person) => person.name == newPersonObj.name
+        );
+
+        // console.log(result.id);
+        const changedContact = { ...result, number: newPersonObj.number };
+
+        console.log("Changed Contact Number", changedContact);
+        contactService.updateContactNumber(result.id, changedContact);
+      } else {
+        console.log("Cancle");
+      }
+    } else {
       contactService.addContact(newPersonObj).then((response) => {
         console.log(response.data);
         setPersons(persons.concat(newPersonObj));
         setNewName("");
         setNewNumber("");
       });
-    } else {
-      alert(`${newName} is already added to phonebook`);
     }
   };
-
-  // const handleDelete = (id) => {
-  //   contactService.deleteContact(id).then((response) => console.log(response));
-  // };
 
   return (
     <>

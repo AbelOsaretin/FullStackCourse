@@ -22,4 +22,9 @@ const deleteContact = (id) => {
   return request.then((response) => response.data);
 };
 
-export default { getAll, addContact, deleteContact };
+const updateContactNumber = (id, newPersonObj) => {
+  const request = axios.put(`${baseUrl}/${id}`, newPersonObj);
+  return request.then((response) => response.data);
+};
+
+export default { getAll, addContact, deleteContact, updateContactNumber };
