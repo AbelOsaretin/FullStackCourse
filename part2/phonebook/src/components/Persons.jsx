@@ -1,19 +1,33 @@
+import { useState } from "react";
 import SinglePerson from "./SinglePerson";
 import contactService from "../services/contact";
+import Notification from "./Notification";
 
 const Persons = ({ filter, persons }) => {
+  const [message, setMessage] = useState("");
+  const [messageDesign, setMessageDesign] = useState("");
   const handleDelete = (id, name) => {
     console.log(id);
     if (confirm(`Delete ${name}?`)) {
       contactService
         .deleteContact(id)
-        .then((response) => console.log(response));
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(() => {
+          setMessageDesign("error");
+          setMessage(`'${name}' Already Deleted`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        });
     } else {
       console.log("Cancled");
     }
   };
   return (
     <>
+      <Notification design={messageDesign} message={message} />
       {filter !== ""
         ? persons
             .filter((person) =>
