@@ -4,6 +4,7 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 // import axios from "axios";
 import contactService from "./services/contact";
+import Notification from "./components/Notification";
 // import { rules } from "eslint-plugin-react-refresh";
 
 const App = () => {
@@ -11,12 +12,11 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageDesign, setMessageDesign] = useState("");
 
   useEffect(() => {
-    console.log(contactService.getAll());
-    console.log("effect");
     contactService.getAll().then((contacts) => {
-      console.log("Setting response to Persons");
       setPersons(contacts);
     });
   }, []);
@@ -76,6 +76,11 @@ const App = () => {
       contactService.addContact(newPersonObj).then((response) => {
         console.log(response.data);
         setPersons(persons.concat(newPersonObj));
+        setMessageDesign("success");
+        setMessage(`Added '${newPersonObj.name}'`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
         setNewName("");
         setNewNumber("");
       });
@@ -86,6 +91,8 @@ const App = () => {
     <>
       <div>
         <h2>Phonebook</h2>
+
+        <Notification design={messageDesign} message={message} />
 
         <Filter value={filter} onChange={handleFilterInput} />
 
