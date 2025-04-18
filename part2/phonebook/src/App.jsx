@@ -12,8 +12,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-  const [message, setMessage] = useState("");
-  const [messageDesign, setMessageDesign] = useState("");
+  const [message, setMessage] = useState(null);
+  const [messageDesign, setMessageDesign] = useState(null);
 
   useEffect(() => {
     contactService.getAll().then((contacts) => {

@@ -4,8 +4,8 @@ import contactService from "../services/contact";
 import Notification from "./Notification";
 
 const Persons = ({ filter, persons }) => {
-  const [message, setMessage] = useState("");
-  const [messageDesign, setMessageDesign] = useState("");
+  const [message, setMessage] = useState(null);
+  const [messageDesign, setMessageDesign] = useState(null);
   const handleDelete = (id, name) => {
     console.log(id);
     if (confirm(`Delete ${name}?`)) {
