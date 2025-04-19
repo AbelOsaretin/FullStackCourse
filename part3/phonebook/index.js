@@ -2,8 +2,6 @@ const express = require("express");
 
 const app = express();
 
-app.use(express.json());
-
 let persons = [
   {
     id: "1",
@@ -27,20 +25,31 @@ let persons = [
   },
 ];
 
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+
+app.use(express.json());
+app.use(requestLogger);
+
 app.get("/info", (request, response) => {
-  console.log("Get Phonebook Info");
+  // console.log("Get Phonebook Info");
   response.send(
     `<p>Phonebook has info for ${persons.length} people</p><p>${Date()}</p>`
   );
 });
 
 app.get("/api/persons", (request, response) => {
-  console.log("Get All Persons");
+  // console.log("Get All Persons");
   response.json(persons);
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  console.log("Get Single Person");
+  // console.log("Get Single Person");
   const id = request.params.id;
   const person = persons.find((person) => person.id === id);
 
@@ -55,7 +64,7 @@ app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id;
   persons = persons.filter((person) => person.id !== id);
   response.status(204).end();
-  console.log(`Deleted ID is ${id}`, persons);
+  // console.log(`Deleted ID is ${id}`, persons);
 });
 
 const generatedId = () => Math.floor(Math.random() * 1000);
@@ -84,8 +93,14 @@ app.post("/api/persons", (request, response) => {
 
   response.json(person);
 
-  console.log("Saved ", person);
+  // console.log("Saved ", person);
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT);
