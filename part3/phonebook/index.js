@@ -38,8 +38,11 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/api/persons/:id", (request, response) => {
+  console.log("Get Single Person");
   const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
+  const person = persons.find((person) => {
+    person.id === id;
+  });
 
   if (person) {
     response.json(person);
