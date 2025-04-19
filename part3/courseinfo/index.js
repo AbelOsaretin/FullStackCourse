@@ -27,7 +27,7 @@ const requestLogger = (request, response, next) => {
   console.log("---");
   next();
 };
-
+app.use(express.static("dist"));
 app.use(express.json());
 app.use(cors());
 app.use(requestLogger);
