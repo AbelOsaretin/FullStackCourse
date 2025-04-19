@@ -36,7 +36,12 @@ let persons = [
 
 app.use(express.json());
 // app.use(requestLogger);
-app.use(morgan("tiny"));
+morgan.token("body", (req) => {
+  return req.method === "POST" ? JSON.stringify(req.body) : "";
+});
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
+);
 
 app.get("/info", (request, response) => {
   // console.log("Get Phonebook Info");
@@ -46,7 +51,8 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons", (request, response) => {
-  // console.log("Get All Persons");
+  console.log(response);
+  response.set("Cache-Control", "no-store");
   response.json(persons);
 });
 
