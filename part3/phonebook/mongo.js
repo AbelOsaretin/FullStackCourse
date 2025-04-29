@@ -8,19 +8,25 @@ const url = `mongodb+srv://contactabel321:${password}@cluster0.gl6brir.mongodb.n
 
 mongoose.set("strictQuery", false);
 
-mongoose.connect(url);
+mongoose
+  .connect(url)
+  .then((result) => console.log("Connected to Mongo DB......"))
+  .catch((error) => console.log("error connecting to MongoDB:", error.message));
 
 const phonebookSchema = new mongoose.Schema({
   name: String,
   phoneNumber: Number,
 });
 
-const Phonebook = mongoose.model("Phonebook", phonebookSchema);
+const Phonebook = mongoose.model("Phonebooks", phonebookSchema);
 
 const phonebook = new Phonebook({
-  name: `${name}`,
-  phoneNumber: number,
+  name: name,
+  phoneNumber: Number(number),
 });
+
+console.log("Name Variable ", name);
+console.log("Number Variable", number);
 
 if (process.argv.length === 3) {
   Phonebook.find({}).then((result) => {

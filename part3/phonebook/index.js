@@ -1,30 +1,33 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const Phonebook = require("./models/phonebook");
+const { default: mongoose } = require("mongoose");
 
 const app = express();
 
-let persons = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+// let persons = [
+//   {
+//     id: "1",
+//     name: "Arto Hellas",
+//     number: "040-123456",
+//   },
+//   {
+//     id: "2",
+//     name: "Ada Lovelace",
+//     number: "39-44-5323523",
+//   },
+//   {
+//     id: "3",
+//     name: "Dan Abramov",
+//     number: "12-43-234345",
+//   },
+//   {
+//     id: "4",
+//     name: "Mary Poppendieck",
+//     number: "39-23-6423122",
+//   },
+// ];
 
 // const requestLogger = (request, response, next) => {
 //   console.log("Method:", request.method);
@@ -48,32 +51,41 @@ app.use(
 app.get("/info", (request, response) => {
   // console.log("Get Phonebook Info");
   response.send(
-    `<p>Phonebook has info for ${persons.length} people</p><p>${Date()}</p>`
+    `<p>Phonebook has info for ${Phonebook.length} people</p><p>${Date()}</p>`
   );
 });
 
 app.get("/api/persons", (request, response) => {
-  // console.log(response);
-  response.set("Cache-Control", "no-store");
-  response.json(persons);
+  Phonebook.find({}).then((persons) => {
+    console.log(persons);
+    response.json(persons);
+  });
 });
 
-app.get("/api/persons/:id", (request, response) => {
-  // console.log("Get Single Person");
+app.get("/api/persons/:id", (request, response, next) => {
+  console.log("Get Single Person");
   const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  Phonebook.findById(id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      response.status(400).send({ error: "malformatted id" });
+    });
 });
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  Phonebook.findByIdAndDelete(id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
   // console.log(`Deleted ID is ${id}`, persons);
 });
 
@@ -87,21 +99,31 @@ app.post("/api/persons", (request, response) => {
       error: "name or number missing",
     });
   }
-  if (persons.find((person) => person.name === body.name)) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }
+  // if (Phonebook.find((person) => person.name === body.name)) {
+  //   return response.status(400).json({
+  //     error: "name must be unique",
+  //   });
+  // }
 
-  const person = {
+  // const person = {
+  //   name: body.name,
+  //   number: body.number,
+  //   id: generatedId(),
+  // };
+
+  const person = new Phonebook({
     name: body.name,
-    number: body.number,
-    id: generatedId(),
-  };
+    phoneNumber: Number(body.number),
+  });
 
-  persons = persons.concat(person);
+  person.save().then((savePerson) => {
+    console.log(savePerson);
+    response.json(savePerson);
+  });
 
-  response.json(person);
+  // Phonebook = Phonebook.concat(person);
+
+  // response.json(person);
 
   // console.log("Saved ", person);
 });
