@@ -89,6 +89,25 @@ app.delete("/api/persons/:id", (request, response, next) => {
   // console.log(`Deleted ID is ${id}`, persons);
 });
 
+app.put("/api/persons/:id", (request, response, next) => {
+  const { name, number } = request.body;
+
+  Phonebook.findById(request.params.id)
+    .then((person) => {
+      if (!person) {
+        return response.status(404).end();
+      }
+
+      person.name = name;
+      person.phoneNumber = number;
+
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson);
+      });
+    })
+    .catch((error) => next(error));
+});
+
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
@@ -97,17 +116,11 @@ app.post("/api/persons", (request, response) => {
       error: "name or number missing",
     });
   }
-  // if (Phonebook.find((person) => person.name === body.name)) {
+  // if (Phonebook.find() => person.name === body.name)) {
   //   return response.status(400).json({
   //     error: "name must be unique",
   //   });
   // }
-
-  // const person = {
-  //   name: body.name,
-  //   number: body.number,
-  //   id: generatedId(),
-  // };
 
   const person = new Phonebook({
     name: body.name,
