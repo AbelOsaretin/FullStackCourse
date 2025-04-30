@@ -124,11 +124,11 @@ app.put("/api/persons/:id", (request, response, next) => {
 app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "name or number missing",
-    });
-  }
+  // if (!body.name || !body.number) {
+  //   return response.status(400).json({
+  //     error: "name or number missing",
+  //   });
+  // }
   // if (Phonebook.find() => person.name === body.name)) {
   //   return response.status(400).json({
   //     error: "name must be unique",
@@ -137,7 +137,7 @@ app.post("/api/persons", (request, response, next) => {
 
   const person = new Phonebook({
     name: body.name,
-    phoneNumber: Number(body.number),
+    phoneNumber: body.number,
   });
 
   person
