@@ -14,8 +14,6 @@ const dummy = (blogs) => {
     });
   };
 
-  
-
   const mostBlogs = (blogs) => {
   
     const authorCounts = _.countBy(blogs, 'author');
@@ -27,7 +25,19 @@ const dummy = (blogs) => {
       blogs: authorCounts[topAuthor],
     };
   };
+
+  const mostLikes = (blogs) => {
+
+    const groupedByAuthor = _.groupBy(blogs, 'author');
+  
+    const authorLikes = _.map(groupedByAuthor, (blogs, author) => ({
+      author,
+      likes: _.sumBy(blogs, 'likes'),
+    }));
+  
+    return _.maxBy(authorLikes, 'likes');
+  };
   
   module.exports = {
-    dummy, totalLikes, favouriteBlog, mostBlogs
+    dummy, totalLikes, favouriteBlog, mostBlogs, mostLikes
   }
