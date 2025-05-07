@@ -98,6 +98,32 @@ test('if likes property is missing, it defaults to 0', async () => {
   assert.strictEqual(savedBlog.likes, 0)
 })
 
+test('missing title results in 400 Bad Request', async () => {
+  const blogWithoutTitle = {
+    author: 'Unknown',
+    url: 'http://example.com',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
+})
+
+test('missing url results in 400 Bad Request', async () => {
+  const blogWithoutUrl = {
+    title: 'Missing URL',
+    author: 'Unknown',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
