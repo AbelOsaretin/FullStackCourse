@@ -47,6 +47,16 @@ test('all notes are returned', async () => {
   assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
+test('blog posts have "id" as the identifier property', async () => {
+  const response = await api.get('/api/blogs')
+  const blogs = response.body
+
+  blogs.forEach(blog => {
+
+    assert.strictEqual(blog._id, undefined)
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
