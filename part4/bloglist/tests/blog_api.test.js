@@ -57,6 +57,30 @@ test('blog posts have "id" as the identifier property', async () => {
   })
 })
 
+test('HTTP POST to /api/blogs creates a new blog post', async () => {
+  // const initialBlogs = await Blog.find({})
+
+  const newBlog = {
+    title: 'Testing POST endpoint',
+    author: 'Dev Abel',
+    url: 'http://example.com/post-test',
+    likes: 5,
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAfter = await Blog.find({})
+  assert.strictEqual(blogsAfter.length, initialBlogs.length + 1)
+
+  const titles = blogsAfter.map(blog => blog.title)
+  assert.ok(titles.includes(newBlog.title))
+
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
