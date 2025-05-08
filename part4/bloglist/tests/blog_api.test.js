@@ -124,6 +124,18 @@ test('missing url results in 400 Bad Request', async () => {
     .expect(400)
 })
 
+
+test('a blog can be deleted', async () => {
+  const response = await Blog.find({})
+  console.log(`${response[0]._id}`)
+  await api
+    .delete(`/api/blogs/${response[0]._id}`)
+    .expect(204)
+
+  // const blogsAfter = await Blog.find({})
+  // assert.strictEqual(blogsAfter.length, response.length -1)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
