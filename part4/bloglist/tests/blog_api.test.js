@@ -132,8 +132,24 @@ test('a blog can be deleted', async () => {
     .delete(`/api/blogs/${response[0]._id}`)
     .expect(204)
 
-  // const blogsAfter = await Blog.find({})
-  // assert.strictEqual(blogsAfter.length, response.length -1)
+  const blogsAfter = await Blog.find({})
+  assert.strictEqual(blogsAfter.length, response.length -1)
+})
+
+test('likes of a blog can be updated', async () => {
+  const updatedLikes = { likes: 10 }
+  const blogToUpdate = await Blog.find({})
+
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate[0]._id}`)
+    .send(updatedLikes)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  assert.strictEqual(response.body.likes, 10)
+
+  const blogInDb = await Blog.findById(blogToUpdate[0]._id)
+  assert.strictEqual(blogInDb.likes, 10)
 })
 
 after(async () => {
