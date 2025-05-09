@@ -13,7 +13,7 @@ title: {
     required: true,
     minlength: 5
 },
-author: {String},
+author: String,
 url: {
   type: String,
   required: true

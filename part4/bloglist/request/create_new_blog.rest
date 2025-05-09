@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Happy Coding Time",
-    "author": "Abel",
-    "url": "Link",
-    "likes": 1
+    "title": "Backend Coding Time",
+    "author": "Danny",
+    "url": "Link_llll",
+    "likes": 13345,
+    "userId": "681e0619cc124455dcc975cc"
 }
