@@ -19,6 +19,19 @@ blogsRouter.get('/', async (request, response) => {
     
   })
 
+  blogsRouter.get('/:id', async (request, response, next) => {
+    await Blog.findById(request.params.id)
+      .then((blog) => {
+        if (blog) {
+          response.json(blog)
+        } else {
+          response.status(404).end()
+        }
+      })
+  
+      .catch((error) => next(error))
+  })
+
 // blogsRouter.post('/', (request, response, next) => {
 //     const body = request.body
   
@@ -61,9 +74,49 @@ blogsRouter.post('/', middleware.tokenExtractor , async (request, response, next
 })
 
 
-blogsRouter.delete('/:id', async (request, response, next) => {
+// blogsRouter.delete('/:id',middleware.tokenExtractor, async (request, response, next) => {
+//   const id = request.params.id
+//   const blog = await Blog.findById(id)
+//   const userid = jwt.verify(request.token, process.env.SECRET)
+//   if (!userid.id) {
+//     return response.status(401).json({ error: 'token invalid' })
+//   }
+//   if ( blog.user.toString() !== userid.toString() ){ 
+//     return response.status(401).json({ error: 'not blog author' })
+// }
+
+// try {
+    
+//   await Blog.findByIdAndDelete(id)
+//   response.status(204).end()
+// } catch (error) {
+//   next(error)
+// }
+// })
+
+blogsRouter.delete('/:id', middleware.tokenExtractor, async (request, response, next) => {
   try {
     const id = request.params.id
+    const blog = await Blog.findById(request.params.id)
+
+    console.log("id", request.params.id)
+    console.log(blog)
+
+    if(!blog) {
+      return response.status(404).json({ error: 'cannot find blog' })
+    }
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+
+    
+
+    if (blog.user.toString() !== decodedToken.id.toString()) {
+      return response.status(401).json({ error: 'not blog author' })
+    }
+
     await Blog.findByIdAndDelete(id)
     response.status(204).end()
   } catch (error) {
