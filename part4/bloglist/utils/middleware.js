@@ -53,6 +53,8 @@ const userExtractor = async (request, response, next) => {
       return response.status(401).json({ error: 'user not found' })
     }
 
+    console.log("Middleware Result", user)
+
     request.user = user
     next()
   } catch (error) {
