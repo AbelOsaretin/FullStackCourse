@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogServices from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user }) => {
 
   const [visibility, setVisibility] = useState(false)
 
@@ -17,8 +17,15 @@ const Blog = ({ blog }) => {
   blogServices.update(id, { likes: currentLikes + 1 })
 }
 
-  const hideWhenVisible = { display: visibility ? 'none' : '' }
-  const showWhenVisible = { display: visibility ? '' : 'none' }
+const handleRemoveButton = (id, title, author) => {
+  if (window.confirm(`Remove blog ${title} by ${author}`)) {
+    blogServices.remove(id)
+  }
+  
+}
+
+const hideWhenVisible = { display: visibility ? 'none' : '' }
+const showWhenVisible = { display: visibility ? '' : 'none' }
   
   
   return (
@@ -27,8 +34,9 @@ const Blog = ({ blog }) => {
     
       <div style={hideWhenVisible}>
         {blog.title} {blog.author}
-        {console.log(blog)}
-          <button onClick={() => setVisibility(true)}>view</button>
+        <button onClick={() => setVisibility(true)}>view</button>
+
+        {console.log(user)}
 
       </div>
       <div style={showWhenVisible}>
@@ -36,6 +44,14 @@ const Blog = ({ blog }) => {
         <p>{blog.url}</p>
         <p> likes {blog.likes} <button onClick={() => handleLikeButton(blog.id, blog.likes)}>like</button></p>
         <p>{blog.user.name}</p>
+        {
+
+        user.name === blog.user.name? 
+        <button onClick={() => handleRemoveButton(blog.id, blog.title, blog.author)}>remove</button> 
+        :
+        <div></div>
+        
+        }
         
       </div>
     </div>
