@@ -24,15 +24,19 @@ const Blog = ({ blog }) => {
   return (
   <div style={blogStyle}>
     <div>
-    {blog.title} {blog.author}
+    
       <div style={hideWhenVisible}>
+        {blog.title} {blog.author}
+        {console.log(blog)}
           <button onClick={() => setVisibility(true)}>view</button>
+
       </div>
       <div style={showWhenVisible}>
+        {blog.title} {blog.author} <button onClick={() => setVisibility(false)}>hide</button>
         <p>{blog.url}</p>
         <p> likes {blog.likes} <button onClick={() => handleLikeButton(blog.id, blog.likes)}>like</button></p>
         <p>{blog.user.name}</p>
-        <button onClick={() => setVisibility(false)}>hide</button>
+        
       </div>
     </div>
 
