@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser]= useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,11 +32,11 @@ const App = () => {
     const handleLogin = async (event) => {
     event.preventDefault()
 
+    try{
     const user = await loginService.login({
         username, password,
       })
-    // console.log('logging in with', username, password)
-    // console.log(user)
+
 
           window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
@@ -43,6 +45,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+    } catch (exception) {
+      setNotificationMessage('Wrong username or password', exception)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+    }
   }
 
   const handleLogOut = () =>{
@@ -61,6 +69,10 @@ const App = () => {
 
     blogService.create(blogObject).then((newBlog) => {
       setBlogs(blogs.concat(newBlog));
+      setNotificationMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     });
 
   }
@@ -71,6 +83,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+         <Notification message={notificationMessage} design={'error'}/>
         <form onSubmit={handleLogin}>
       <div>
         username
@@ -99,6 +112,8 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+
+      <Notification message={notificationMessage} design={'success'}/>
       <p>{user.name} logged-in <button onClick={handleLogOut}>logout</button> </p>
 
       <form onSubmit={handleAddNewBlog}>
