@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import PropTypes from 'prop-types'
+
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -56,6 +58,12 @@ const addBlog = (event) => {
     </div>
   )
 
+}
+
+BlogForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired
 }
 
 export default BlogForm
