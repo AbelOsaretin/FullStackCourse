@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react'
 import blogServices from '../services/blogs'
 
 
@@ -14,26 +14,23 @@ const Blog = ({ blog, user }) => {
     marginBottom: 5
   }
 
- const handleLikeButton = (id, currentLikes) => {
-  blogServices.update(id, { likes: currentLikes + 1 })
-}
-
-const handleRemoveButton = (id, title, author) => {
-  if (window.confirm(`Remove blog ${title} by ${author}`)) {
-    blogServices.remove(id)
+  const handleLikeButton = (id, currentLikes) => {
+    blogServices.update(id, { likes: currentLikes + 1 })
   }
-  
-}
 
-const hideWhenVisible = { display: visibility ? 'none' : '' }
-const showWhenVisible = { display: visibility ? '' : 'none' }
-  
-  
+  const handleRemoveButton = (id, title, author) => {
+    if (window.confirm(`Remove blog ${title} by ${author}`)) {
+      blogServices.remove(id)
+    }
+
+  }
+
+  const hideWhenVisible = { display: visibility ? 'none' : '' }
+  const showWhenVisible = { display: visibility ? '' : 'none' }
   return (
-  <div style={blogStyle}>
-    <div>
-    
-      <div style={hideWhenVisible}>
+    <div style={blogStyle} className='blog'>
+
+      <div style={hideWhenVisible}  className='blog-title-author'>
         {blog.title} {blog.author}
         <button onClick={() => setVisibility(true)}>view</button>
 
@@ -47,17 +44,16 @@ const showWhenVisible = { display: visibility ? '' : 'none' }
         <p>{blog.user.name}</p>
         {
 
-        user.name === blog.user.name? 
-        <button onClick={() => handleRemoveButton(blog.id, blog.title, blog.author)}>remove</button> 
-        :
-        <div></div>
-        
+          user.name === blog.user.name?
+            <button onClick={() => handleRemoveButton(blog.id, blog.title, blog.author)}>remove</button>
+            :
+            <div></div>
         }
-        
-      </div>
-    </div>
 
-  </div>  
+      </div>
+
+
+    </div>
   )
 }
 
