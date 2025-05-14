@@ -104,7 +104,7 @@ test('clicking the view button displays blog URL and number of likes', async () 
 // })
 
 test('clicking the like button twice calls event handler twice', async () => {
-  // Mock the PUT request to prevent real network calls
+  
   axios.put.mockResolvedValue({
     data: {
       likes: 6,
@@ -132,7 +132,7 @@ test('clicking the like button twice calls event handler twice', async () => {
   await user.click(likeButton)
   await user.click(likeButton)
 
-  // You can also check axios.put was called twice
+  
   expect(axios.put).toHaveBeenCalledTimes(2)
 })
 

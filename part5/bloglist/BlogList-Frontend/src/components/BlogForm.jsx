@@ -32,6 +32,7 @@ const addBlog = (event) => {
             type="text"
             value={title}
             name="title"
+            placeholder="title"
             onChange={({ target }) => setTitle(target.value)}
         />
         </div>
@@ -41,6 +42,7 @@ const addBlog = (event) => {
             type="text"
             value={author}
             name="author"
+            placeholder="author"
             onChange={({ target }) => setAuthor(target.value)}
         />
         </div>
@@ -50,6 +52,7 @@ const addBlog = (event) => {
             type="text"
             value={url}
             name="url"
+            placeholder="url"
             onChange={({ target }) => setUrl(target.value)}
         />
         </div>
@@ -61,9 +64,7 @@ const addBlog = (event) => {
 }
 
 BlogForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
+  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
