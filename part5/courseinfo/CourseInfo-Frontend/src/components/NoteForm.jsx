@@ -54,10 +54,13 @@ const NoteForm = ({ createNote }) => {
       <h2>Create a new note</h2>
 
       <form onSubmit={addNote}>
+        <label>
+          NewNote
         <input
           value={newNote}
           onChange={handleChange}
         />
+        </label>
         <button type="submit">save</button>
       </form>
     </div>
