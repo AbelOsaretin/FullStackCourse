@@ -65,4 +65,44 @@ describe("Playwright blog homepage", () => {
       ).toBeVisible();
     });
   });
+
+  describe("user likes a blog", () => {
+    beforeEach(async ({ page }) => {
+      await page.getByRole("button", { name: "login" }).click();
+      await page.getByLabel("username").fill("mluukkai");
+      await page.getByLabel("password").fill("salainen");
+      await page.getByRole("button", { name: "login" }).click();
+    });
+
+    test("user can like a blog", async ({ page }) => {
+      // Create a blog
+      await page.getByRole("button", { name: "new note" }).click();
+      await page.getByLabel("title").fill("a blog created by playwright");
+      await page.getByLabel("author").fill("Daddy Cool");
+      await page.getByLabel("url").fill("https://example.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      // Like the blog
+      await page
+        .getByText("a blog created by playwright Daddy Coolview")
+        .getByRole("button", { name: "view" })
+        .click();
+      await page
+        .getByText("a blog created by playwright Daddy Cool")
+        .getByRole("button", { name: "like" })
+        .click();
+
+      // Verify that the like count has increased
+      await page.reload();
+      await page.reload();
+      await page.reload();
+
+      await page
+        .getByText("a blog created by playwright Daddy Coolview")
+        .getByRole("button", { name: "view" })
+        .click();
+
+      await expect(page.getByText("likes 1")).toBeVisible();
+    });
+  });
 });
