@@ -27,6 +27,7 @@ const addBlog = (event) => {
 
       <form onSubmit={addBlog}>
         <div>
+          <label>
           title
             <input
             type="text"
@@ -35,8 +36,10 @@ const addBlog = (event) => {
             placeholder="title"
             onChange={({ target }) => setTitle(target.value)}
         />
+        </label>
         </div>
        <div>
+          <label>
           author
             <input
             type="text"
@@ -45,8 +48,10 @@ const addBlog = (event) => {
             placeholder="author"
             onChange={({ target }) => setAuthor(target.value)}
         />
+        </label>
         </div>
         <div>
+          <label>
           url
             <input
             type="text"
@@ -55,6 +60,7 @@ const addBlog = (event) => {
             placeholder="url"
             onChange={({ target }) => setUrl(target.value)}
         />
+        </label>
         </div>
         <button type="submit">create</button>
       </form>

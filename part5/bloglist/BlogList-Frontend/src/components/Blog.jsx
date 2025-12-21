@@ -31,10 +31,9 @@ const Blog = ({ blog, user }) => {
     <div style={blogStyle} className='blog'>
 
       <div style={hideWhenVisible}  className='blog-title-author'>
-        {blog.title} {blog.author}
-        <button onClick={() => setVisibility(true)}>view</button>
-
-        {console.log(user)}
+        {blog.title} {blog.author}<div>
+          <br/>
+          <button onClick={() => setVisibility(true)}>view</button></div>
 
       </div>
       <div style={showWhenVisible}>

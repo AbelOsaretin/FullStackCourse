@@ -46,13 +46,23 @@ describe("Playwright blog homepage", () => {
     });
   });
 
-  // test('get started link', async ({ page }) => {
-  //   await page.goto('https://playwright.dev/');
+  describe("When logged in", () => {
+    beforeEach(async ({ page }) => {
+      await page.getByRole("button", { name: "login" }).click();
+      await page.getByLabel("username").fill("mluukkai");
+      await page.getByLabel("password").fill("salainen");
+      await page.getByRole("button", { name: "login" }).click();
+    });
 
-  //   // Click the get started link.
-  //   await page.getByRole('link', { name: 'Get started' }).click();
-
-  //   // Expects page to have a heading with the name of Installation.
-  //   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-  // });
+    test("a new blog can be created", async ({ page }) => {
+      await page.getByRole("button", { name: "new note" }).click();
+      await page.getByLabel("title").fill("a blog created by playwright");
+      await page.getByLabel("author").fill("Daddy Cool");
+      await page.getByLabel("url").fill("https://example.com");
+      await page.getByRole("button", { name: "create" }).click();
+      await expect(
+        page.getByText("a blog created by playwright Daddy Coolview")
+      ).toBeVisible();
+    });
+  });
 });
