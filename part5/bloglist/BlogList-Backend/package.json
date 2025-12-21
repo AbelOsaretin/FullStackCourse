@@ -6,6 +6,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "test": "cross-env  NODE_ENV=test node --test",
+    "start:test": "cross-env NODE_ENV=test node --watch index.js",
     "lint": "eslint ."
   },
   "author": "Abel Osaretin <contact.abel321@gmail.com>",
