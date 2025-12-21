@@ -105,4 +105,58 @@ describe("Playwright blog homepage", () => {
       await expect(page.getByText("likes 1")).toBeVisible();
     });
   });
+
+  describe("user deletes a blog", () => {
+    beforeEach(async ({ page }) => {
+      await page.getByRole("button", { name: "login" }).click();
+      await page.getByLabel("username").fill("mluukkai");
+      await page.getByLabel("password").fill("salainen");
+      await page.getByRole("button", { name: "login" }).click();
+    });
+
+    test("a user can delete a blog", async ({ page }) => {
+      // create a blog
+      await page.getByRole("button", { name: "new note" }).click();
+      await page.getByLabel("title").fill("a blog created by playwright");
+      await page.getByLabel("author").fill("Daddy Cool");
+      await page.getByLabel("url").fill("https://example.com");
+      await page.getByRole("button", { name: "create" }).click();
+      await expect(
+        page.getByText("a blog created by playwright Daddy Coolview")
+      ).toBeVisible();
+
+      await page.reload();
+      await page.reload();
+      await page.reload();
+
+      // delete the blog
+      await page
+        .getByText("a blog created by playwright Daddy Coolview")
+        .getByRole("button", { name: "view" })
+        .click();
+      await page
+        .getByText("a blog created by playwright Daddy Cool")
+        .getByRole("button", { name: "remove" })
+        .click();
+
+      page.on("dialog", async (dialog) => {
+        // Verify the message displayed in the dialog
+        expect(dialog.message()).toContain(
+          "Remove blog a blog created by playwright by Daddy Cool"
+        );
+
+        // 2. Accept the dialog (equivalent to clicking 'OK')
+        await dialog.accept();
+      });
+
+      await page.reload();
+      await page.reload();
+      await page.reload();
+
+      // verify that the blog is deleted
+      await expect(
+        page.getByText("a blog created by playwright Daddy Coolview")
+      ).not.toBeVisible();
+    });
+  });
 });
