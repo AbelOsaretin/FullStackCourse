@@ -1,150 +1,100 @@
-// // import { StrictMode } from 'react'
-// // import { createRoot } from 'react-dom/client'
-// // import './index.css'
-// // import App from './App.jsx'
-// // import { createStore } from 'redux'
+// import ReactDOM from "react-dom/client";
+// import { createStore } from "redux";
+// import noteReducer from "./reducers/noteReducer";
 
-// // const counterReducer = (state = 0, action) => {
-// //   switch (action.type) {
-// //     case 'INCREMENT':
-// //       return state + 1
-// //     case 'DECREMENT':
-// //       return state - 1
-// //     case 'ZERO':
-// //       return 0
-// //     default: // if none of the above matches, code comes here
-// //       return state
-// //   }
-// // }
+// const store = createStore(noteReducer);
 
-// // const store = createStore(counterReducer)
+// store.dispatch({
+//   type: "NEW_NOTE",
+//   payload: {
+//     content: "the app state is in redux store",
+//     important: true,
+//     id: 1,
+//   },
+// });
 
-// // store.subscribe(() => {
-// //   const storeNow = store.getState()
-// //   console.log(storeNow)
-// // })
+// store.dispatch({
+//   type: "NEW_NOTE",
+//   payload: {
+//     content: "state changes are made with actions",
+//     important: false,
+//     id: 2,
+//   },
+// });
 
-// // // console.log(store.getState())
-// // store.dispatch({type: 'INCREMENT'})
-// // store.dispatch({type: 'INCREMENT'})
-// // store.dispatch({type: 'INCREMENT'})
-// // // console.log(store.getState())
-// // store.dispatch({type: 'ZERO'})
-// // store.dispatch({type: 'DECREMENT'})
-// // // console.log(store.getState())
+// const generateId = () => Number((Math.random() * 1000000).toFixed(0));
 
-// // createRoot(document.getElementById('root')).render(
-// //   <StrictMode>
-// //     <App />
-// //   </StrictMode>,
-// // )
+// const createNote = (content) => {
+//   return {
+//     type: "NEW_NOTE",
+//     payload: {
+//       content,
+//       important: false,
+//       id: generateId(),
+//     },
+//   };
+// };
 
-
-// import ReactDOM from 'react-dom/client'
-// import { createStore } from 'redux'
-
-// const counterReducer = (state = 0, action) => {
-//   switch (action.type) {
-//     case 'INCREMENT':
-//       return state + 1
-//     case 'DECREMENT':
-//       return state - 1
-//     case 'ZERO':
-//       return 0
-//     default:
-//       return state
-//   }
-// }
-
-// const store = createStore(counterReducer)
+// const toggleImportanceOf = (id) => {
+//   return {
+//     type: "TOGGLE_IMPORTANCE",
+//     payload: { id },
+//   };
+// };
 
 // const App = () => {
+//   const addNote = (event) => {
+//     event.preventDefault();
+//     const content = event.target.note.value;
+//     event.target.note.value = "";
+//     store.dispatch(createNote(content));
+//   };
+
+//   const toggleImportance = (id) => {
+//     store.dispatch(toggleImportanceOf(id));
+//   };
+
 //   return (
 //     <div>
-//       <div>{store.getState()}</div>
-//       <button onClick={() => store.dispatch({ type: 'INCREMENT' })}>
-//         plus
-//       </button>
-//       <button onClick={() => store.dispatch({ type: 'DECREMENT' })}>
-//         minus
-//       </button>
-//       <button onClick={() => store.dispatch({ type: 'ZERO' })}>
-//         zero
-//       </button>
+//       <form onSubmit={addNote}>
+//         <input name="note" />
+//         <button type="submit">add</button>
+//       </form>
+//       <ul>
+//         {store.getState().map((note) => (
+//           <li key={note.id}>
+//             {" "}
+//             <button onClick={() => toggleImportance(note.id)}>
+//               toggle importance
+//             </button>
+//             {note.content} {note.important ? <strong>important</strong> : ""}
+//           </li>
+//         ))}
+//       </ul>
 //     </div>
-//   )
-// }
+//   );
+// };
 
-// const root = ReactDOM.createRoot(document.getElementById('root'))
+// const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // const renderApp = () => {
-//   root.render(<App />)
-// }
+//   root.render(<App />);
+// };
 
-// renderApp()
-// store.subscribe(renderApp)
+// renderApp();
+// store.subscribe(renderApp);
 
+import ReactDOM from "react-dom/client";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
-import ReactDOM from 'react-dom/client'
-import { createStore } from 'redux'
-import noteReducer from './reducers/noteReducer.js'
+import App from "./App";
+import noteReducer from "./reducers/noteReducer";
 
-// const noteReducer = (state = [], action) => {
-//   switch (action.type) {
-//     case 'NEW_NOTE':
-//  return state.concat(action.payload)
-//     default:
-//       return state
-//   }
-// }
+const store = createStore(noteReducer);
 
-const store = createStore(noteReducer)
-
-store.dispatch({
-  type: 'NEW_NOTE',
-  payload: {
-    content: 'the app state is in redux store',
-    important: true,
-    id: 1
-  }    
-})
-
-store.dispatch({
-  type: 'NEW_NOTE',
-  payload: {
-    content: 'state changes are made with actions',
-    important: false,
-    id: 2
-  }
-})
-
-store.dispatch({
-  type: 'TOGGLE_IMPORTANCE',
-  payload: {
-    id: 2
-  }
-}
-)
-
-const App = () => {
-  return (
-    <div>
-      <ul>
-        {store.getState().map(note => (
-          <li key={note.id}>
-            {note.content} <strong>{note.important ? 'important' : ''}</strong>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-const root = ReactDOM.createRoot(document.getElementById('root'))
-
-const renderApp = () => {
-  root.render(<App />)
-}
-
-renderApp()
-store.subscribe(renderApp)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
