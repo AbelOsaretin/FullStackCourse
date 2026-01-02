@@ -1,11 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getAnecdotes, updateAnecdote } from './requests'
-
+import { useContext, useReducer } from 'react'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
+import NotificationContext from './NotificationContext'
+
 const App = () => {
   const queryClient = useQueryClient()
+  const { notification, notificationDispatch } = useContext(NotificationContext)
 
   const voteMutation = useMutation({
     mutationFn: updateAnecdote,
@@ -23,6 +26,13 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     voteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+    notificationDispatch({
+      type: 'VOTE',
+      payload: `You voted '${anecdote.content}'`,
+    })
+    setTimeout(() => {
+      notificationDispatch({ type: 'CLEAR' })
+    }, 5000)
     console.log('vote ', anecdote.id)
   }
 
@@ -36,7 +46,7 @@ const App = () => {
     <div>
       <h3>Anecdote app</h3>
 
-      <Notification />
+      <Notification notificationContent={notification} />
       <AnecdoteForm />
 
       {anecdotes.map((anecdote) => (
@@ -44,7 +54,17 @@ const App = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
+            <button
+              onClick={() => {
+                handleVote(anecdote)
+                notificationDispatch({
+                  type: 'VOTE',
+                  payload: `You voted '${anecdote.content}'`,
+                })
+              }}
+            >
+              vote
+            </button>
           </div>
         </div>
       ))}
