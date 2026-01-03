@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Routes, Route, Link, useMatch, useNavigate } from "react-router-dom";
+import { useField } from "./hooks";
 
 const Menu = () => {
   const padding = {
@@ -79,18 +80,27 @@ const Footer = () => (
 
 const CreateNew = (props) => {
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  // const [content, setContent] = useState("");
+  // const [author, setAuthor] = useState("");
+  // const [info, setInfo] = useState("");
+  const contentHook = useField("text");
+  const authorHook = useField("text");
+  const infoHook = useField("text");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const content = contentHook.value;
+    const author = authorHook.value;
+    const info = infoHook.value;
     props.onCreate({
       content,
       author,
       info,
       votes: 0,
     });
+    console.log(content);
+    console.log(author);
+    console.log(info);
     navigate("/");
   };
 
@@ -102,25 +112,18 @@ const CreateNew = (props) => {
           content
           <input
             name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            type={contentHook.type}
+            value={contentHook.value}
+            onChange={contentHook.onChange}
           />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...authorHook} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...infoHook} />
         </div>
         <button>create</button>
       </form>
@@ -155,6 +158,7 @@ const App = () => {
     : null;
 
   const addNew = (anecdote) => {
+    console.log(anecdote);
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
     setNotification(`a new anecdote ${anecdote.content} created!`);
