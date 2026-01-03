@@ -7,16 +7,18 @@ export const useField = (type) => {
     setValue(event.target.value);
   };
 
-  const Reset = () => {
+  const reset = () => {
     setValue("");
   };
 
-  return {
-    type,
-    value,
-    onChange,
-    Reset,
-  };
+  // return {
+  //   type,
+  //   value,
+  //   onChange,
+  //   reset,
+  // };
+
+  return { inputProps: { type, value, onChange }, reset };
 };
 
 // modules can have several named exports

@@ -86,9 +86,9 @@ const CreateNew = (props) => {
 
   const handleReset = (e) => {
     e.preventDefault();
-    contentHook.Reset();
-    authorHook.Reset();
-    infoHook.Reset();
+    contentHook.reset();
+    authorHook.reset();
+    infoHook.reset();
   };
 
   const handleSubmit = (e) => {
@@ -111,20 +111,21 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
+          {/* <input
             name="content"
             type={contentHook.type}
             value={contentHook.value}
             onChange={contentHook.onChange}
-          />
+          /> */}
+          <input {...contentHook.inputProps} name="content" />
         </div>
         <div>
           author
-          <input {...authorHook} />
+          <input {...authorHook.inputProps} name="author" />
         </div>
         <div>
           url for more info
-          <input {...infoHook} />
+          <input {...infoHook.inputProps} name="info" />
         </div>
         <button>create</button>
         <button onClick={handleReset}>reset</button>
