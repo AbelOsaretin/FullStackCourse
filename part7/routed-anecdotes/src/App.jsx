@@ -80,12 +80,16 @@ const Footer = () => (
 
 const CreateNew = (props) => {
   const navigate = useNavigate();
-  // const [content, setContent] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [info, setInfo] = useState("");
   const contentHook = useField("text");
   const authorHook = useField("text");
   const infoHook = useField("text");
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    contentHook.Reset();
+    authorHook.Reset();
+    infoHook.Reset();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -98,9 +102,6 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
-    console.log(content);
-    console.log(author);
-    console.log(info);
     navigate("/");
   };
 
@@ -126,6 +127,7 @@ const CreateNew = (props) => {
           <input {...infoHook} />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   );
